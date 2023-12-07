@@ -1,0 +1,21 @@
+services:
+  demo-graalvm-java-native-compile:
+    image: ghcr.io/xuyixun/demo-graalvm-java-native-compile:latest
+    pull_policy: always
+    platform: linux/x86_64
+    ports:
+    - 8086:8080
+    networks:
+    - database
+  demo-graalvm-java-build-image:
+    image: ghcr.io/xuyixun/demo-graalvm-java-build-image:latest
+    pull_policy: always
+    platform: linux/x86_64
+    ports:
+    - 8087:8080
+    networks:
+    - database
+networks:
+  database:
+    external: true
+    name: database

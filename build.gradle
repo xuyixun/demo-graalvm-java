@@ -1,0 +1,40 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.2.0'
+    id 'io.spring.dependency-management' version '1.1.4'
+    id 'org.graalvm.buildtools.native' version '0.9.28'
+}
+group = 'com.example'
+version = '0.0.1-SNAPSHOT'
+java {
+    sourceCompatibility = '21'
+}
+repositories {
+    mavenCentral()
+}
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+tasks.named('test') {
+    useJUnitPlatform()
+}
+tasks.named("bootBuildImage") {
+    imageName.set("ghcr.io/${System.getProperty("ghcr_username")}/demo-graalvm-java-build-image")
+    publish = true
+    docker {
+        publishRegistry {
+            username = System.getProperty("ghcr_username")
+            password = System.getProperty("ghcr_token")
+        }
+    }
+    environment["BP_JVM_VERSION"] = "21"
+    environment["BP_NATIVE_IMAGE_BUILD_ARGUMENTS"] = "-march=compatibility"
+}
+graalvmNative {
+    binaries.configureEach {
+        buildArgs.add("-march=compatibility")
+    }
+}
