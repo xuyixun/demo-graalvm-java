@@ -22,6 +22,8 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 tasks.named("bootBuildImage") {
+    //build on apple silicon
+    builder = "dashaun/builder:tiny"
     imageName.set("ghcr.io/${System.getProperty("ghcr_username")}/demo-graalvm-java-build-image")
     publish = true
     docker {

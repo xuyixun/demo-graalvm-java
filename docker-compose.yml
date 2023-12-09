@@ -10,7 +10,7 @@ services:
   demo-graalvm-java-build-image:
     image: ghcr.io/xuyixun/demo-graalvm-java-build-image:latest
     pull_policy: always
-    platform: linux/x86_64
+    #platform: linux/x86_64
     ports:
     - 8087:8080
     networks:
